@@ -2,6 +2,7 @@ import { Box, Button, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 const validFileTypes = ["image/jpg", "image/jpeg", "image/png"];
+const URL = "/images";
 
 const ErrorText = ({ children, ...props }) => (
   <Text fontSize="lg" color="red.300" {...props}>
@@ -10,6 +11,12 @@ const ErrorText = ({ children, ...props }) => (
 );
 
 const Posts = () => {
+  const {
+    mutate: uploadImage,
+    isLoading: uploading,
+    error: uploadError,
+  } = useMutation({ url: URL });
+
   const [error, setError] = useState("");
 
   const handleUpload = async (e) => {
@@ -30,10 +37,12 @@ const Posts = () => {
         variant="outline"
         mb={4}
         cursor="pointer"
+        isLoading={uploading}
       >
         Upload
       </Button>
       {error && <ErrorText>{error}</ErrorText>}
+      {uploadError && <ErrorText>{uploadError}</ErrorText>}
 
       <Text textAlign="left" mb={4}>
         Posts
